@@ -1,0 +1,31 @@
+﻿@model MembershipPlanDataModel;
+
+@{
+    ViewData["Title"] = "Edit Membership Plan";
+}
+
+<h1>Edit Membership Plan</h1>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Edit Membership Plan</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="/MembershipPlan/Update">
+                        <input type="hidden" value="@Model.MembershipPlanId" name="MembershipPlanId" />
+                        <label>Plan Name: </label>
+                        <input type="text" name="PlanName" class="form-control" required value="@Model.PlanName" />
+                        <br />
+                        <label>Plan Price: </label>
+                        <input type="number" name="Price" class="form-control" required value="@Model.Price" />
+                        <br />
+                        <button class="btn btn-outline-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

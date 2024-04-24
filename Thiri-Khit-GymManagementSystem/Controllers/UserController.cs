@@ -138,6 +138,7 @@ namespace Thiri_Khit_GymManagementSystem.Controllers
                     user.UserName = userDataModel.UserName;
                     user.Email = userDataModel.Email;
                     int result = await _appDbContext.SaveChangesAsync();
+
                     if (result > 0)
                     {
                         TempData["success"] = "Updating Successful!";
