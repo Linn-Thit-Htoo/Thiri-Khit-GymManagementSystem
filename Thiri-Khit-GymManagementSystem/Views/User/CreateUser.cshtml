@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Create User";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <a href="/User/UserManagement" class="btn btn-outline-dark mb-3">Back</a>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Create New User</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="/User/Save">
+                        <label>User Name: </label>
+                        <input type="text" name="UserName" required class="form-control" />
+                        <br />
+                        <label>Email: </label>
+                        <input type="text" name="Email" required class="form-control" />
+                        <br />
+                        <button type="submit" class="btn btn-outline-primary">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
