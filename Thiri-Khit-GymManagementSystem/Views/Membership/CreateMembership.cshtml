@@ -1,0 +1,48 @@
+﻿@model CreateMembershipResponseModel;
+
+@{
+    ViewData["Title"] = "Create Membership";
+}
+
+<h1>Create Membership</h1>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Create Membership</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/Membership/Save" method="post">
+                        <label>Membership Plan: </label>
+                        <select class="form-control" required name="MembershipPlanId">
+                            <option value="" selected>Choose plan...</option>
+                            @foreach (var plan in Model.Plans)
+                            {
+                                <option value="@plan.MembershipPlanId">@plan.PlanName</option>
+                            }
+                        </select>
+                        <br />
+                        <label>Choose Member: </label>
+                        <select class="form-control" required name="UserId">
+                            <option value="" selected>Choose member...</option>
+                            @foreach (var user in Model.Users)
+                            {
+                                <option value="@user.UserId">@user.UserName</option>
+                            }
+                        </select>
+                        <br />
+                        <label>Start Date: </label>
+                        <input type="date" class="form-control" name="StartDate" required />
+                        <br />
+                        <label>End Date: </label>
+                        <input type="date" class="form-control" name="EndDate" required />
+                        <br />
+                        <button class="btn btn-outline-primary" type="submit">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
