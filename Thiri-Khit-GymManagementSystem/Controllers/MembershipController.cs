@@ -53,7 +53,9 @@ ORDER BY Membership.MembershipId DESC";
         {
             try
             {
-                List<UserDataModel> users = await _appDbContext.Users.ToListAsync();
+                List<UserDataModel> users = await _appDbContext.Users
+                    .Where(x => x.UserRole != "admin")
+                    .ToListAsync();
                 List<MembershipPlanDataModel> plans = await _appDbContext.MembershipPlan.ToListAsync();
 
                 CreateMembershipResponseModel responseModel = new()
@@ -86,6 +88,71 @@ ORDER BY Membership.MembershipId DESC";
                 {
                     TempData["error"] = "Creating Fail!";
                 }
+                return RedirectToAction("MembershipManagement");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> EditMembership(long id)
+        {
+            try
+            {
+                MembershipDataModel? membership = await _appDbContext.Membership
+                    .FirstOrDefaultAsync(x => x.MembershipId == id);
+
+                List<MembershipPlanDataModel> plans = await _appDbContext.MembershipPlan
+                    .ToListAsync();
+
+                List<UserDataModel> users = await _appDbContext.Users
+                    .Where(x => x.UserRole != "admin")
+                    .ToListAsync();
+
+                EditMembershipResponseModel responseModel = new()
+                {
+                    Membership = membership,
+                    Users = users,
+                    Plans = plans
+                };
+
+                return View(responseModel);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(MembershipDataModel dataModel)
+        {
+            try
+            {
+                MembershipDataModel? membership = await _appDbContext.Membership
+                    .FirstOrDefaultAsync(x => x.MembershipId == dataModel.MembershipId);
+                if (membership is null)
+                {
+                    TempData["error"] = "Updating Fail!";
+                    return RedirectToAction("MembershipManagement");
+                }
+
+                membership.MembershipPlanId = dataModel.MembershipPlanId;
+                membership.UserId = dataModel.UserId;
+                membership.StartDate = dataModel.StartDate;
+                membership.EndDate = dataModel.EndDate;
+                int result = await _appDbContext.SaveChangesAsync();
+
+                if (result > 0)
+                {
+                    TempData["success"] = "Updating Successful!";
+                }
+                else
+                {
+                    TempData["error"] = "Updating Fail!";
+                }
+
                 return RedirectToAction("MembershipManagement");
             }
             catch (Exception ex)

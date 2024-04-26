@@ -108,6 +108,7 @@ namespace Thiri_Khit_GymManagementSystem.Controllers
                 membershipPlan.PlanName = dataModel.PlanName;
                 membershipPlan.Price = dataModel.Price;
                 int result = await _appDbContext.SaveChangesAsync();
+
                 if (result > 0)
                 {
                     TempData["success"] = "Updating Successful!";
@@ -116,6 +117,7 @@ namespace Thiri_Khit_GymManagementSystem.Controllers
                 {
                     TempData["error"] = "Updating Fail!";
                 }
+
                 return RedirectToAction("MembershipPlanManagement");
             }
             catch (Exception ex)
