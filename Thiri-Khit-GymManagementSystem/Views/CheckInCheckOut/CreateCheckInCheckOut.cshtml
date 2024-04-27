@@ -1,0 +1,36 @@
+﻿@model List<UserDataModel>;
+
+@{
+    ViewData["Title"] = "Create Check In Check Out";
+}
+
+<h1>Create Check In Check Out</h1>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Create Check In Check Out</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/CheckInCheckOut/Save" method="post">
+                        <label>Choose Member: </label>
+                        <select name="UserId" class="form-control" required>
+                            <option value="" selected>Choose options...</option>
+                            @foreach (var item in Model)
+                            {
+                                <option value="@item.UserId">@item.UserName</option>
+                            }
+                        </select>
+                        <br />
+                        <label>Choose check in date time: </label>
+                        <input name="CheckInDateTime" type="datetime-local" class="form-control" required />
+                        <br />
+                        <button class="btn btn-outline-primary" type="submit">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

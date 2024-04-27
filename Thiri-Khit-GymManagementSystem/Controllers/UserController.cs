@@ -32,7 +32,7 @@ namespace Thiri_Khit_GymManagementSystem.Controllers
                     return RedirectToAction("LoginPage");
                 }
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("UserManagement", "User");
             }
             catch (Exception ex)
             {

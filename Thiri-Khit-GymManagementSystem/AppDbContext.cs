@@ -12,5 +12,6 @@ namespace Thiri_Khit_GymManagementSystem
         public DbSet<UserDataModel> Users { get; set; }
         public DbSet<MembershipPlanDataModel> MembershipPlan { get; set; }
         public DbSet<MembershipDataModel> Membership { get; set; }
+        public DbSet<CheckInCheckOutDataModel> Check_In_Check_Out { get; set; }
     }
 }

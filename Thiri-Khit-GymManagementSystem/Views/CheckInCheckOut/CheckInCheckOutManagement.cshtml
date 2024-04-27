@@ -1,0 +1,69 @@
+﻿@model List<CheckInCheckOutResponseModel>;
+
+@{
+    ViewData["Title"] = "Check In Check Out Management";
+    var success = TempData["success"];
+    var error = TempData["error"];
+}
+
+
+<h1>Check In Check Out Management</h1>
+
+<a class="btn btn-outline-dark my-3" href="/CheckInCheckOut/CreateCheckInCheckOut">Create Check In Check Out</a>
+
+@if (success is not null)
+{
+    <div class="alert alert-success" role="alert">
+        @success
+    </div>
+}
+
+@if (error is not null)
+{
+    <div class="alert alert-danger" role="alert">
+        @error
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>User Name</th>
+            <th>User Role</th>
+            <th>Check In Date Time</th>
+            <th>Check Out Date Time</th>
+            <th>CheckOut</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @foreach (var item in Model)
+            {
+                <td>@item.UserName</td>
+                <td>@item.UserRole</td>
+                <td>@item.CheckInDateTime</td>
+                <td>@item.CheckOutDateTime</td>
+                <td>
+                    <form method="post" action="/CheckInCheckOut/CheckOut/@item.CICOId">
+                        <button class="btn btn-outline-primary" type="submit">CheckOut</button>
+                    </form>
+                </td>
+                <td>
+                    <a class="btn btn-outline-success" href="/CheckInCheckOut/EditCheckInCheckOut/@item.CICOId">Edit</a>
+                    <button class="btn btn-outline-danger" onclick="btnDelete('@item.CICOId')">Delete</button>
+                </td>
+            }
+        </tr>
+    </tbody>
+</table>
+
+@section scripts {
+    <script>
+        function btnDelete(id) {
+            if (window.confirm("Are you sure you want to delete?")) {
+                window.location.href = `/CheckInCheckOut/Delete/${id}`;
+            }
+        }
+    </script>
+}
