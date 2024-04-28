@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using Thiri_Khit_GymManagementSystem.Models;
 
 namespace Thiri_Khit_GymManagementSystem.Controllers
@@ -31,6 +32,8 @@ namespace Thiri_Khit_GymManagementSystem.Controllers
                     TempData["error"] = "Login Fail.";
                     return RedirectToAction("LoginPage");
                 }
+                HttpContext.Session.SetString("id", user.UserId.ToString());
+                HttpContext.Session.SetString("name", user.UserName);
 
                 return RedirectToAction("UserManagement", "User");
             }
@@ -183,6 +186,102 @@ namespace Thiri_Khit_GymManagementSystem.Controllers
                     TempData["error"] = "Deleting Fail!";
                 }
                 return RedirectToAction("UserManagement");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IActionResult ProfileSetting()
+        {
+            try
+            {
+                string? id = HttpContext.Session.GetString("id");
+                string? name = HttpContext.Session.GetString("name");
+                TempData["id"] = id;
+                TempData["name"] = name;
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfile(UpdateProfileRequestModel requestModel)
+        {
+            try
+            {
+                UserDataModel? user = await _appDbContext.Users
+                    .FirstOrDefaultAsync(x => x.UserId == requestModel.UserId);
+                if (user is null)
+                {
+                    TempData["error"] = "Updating Fail!";
+                    return RedirectToAction("UserManagement");
+                }
+
+                user.UserName = requestModel.UserName;
+                int result = await _appDbContext.SaveChangesAsync();
+
+                if (result > 0)
+                {
+                    TempData["successMsg"] = "Updating Successful!";
+                }
+                else
+                {
+                    TempData["errorMsg"] = "Updating Fail!";
+                }
+                return RedirectToAction("LoginPage");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [ActionName("ChangePasswordPage")]
+        public IActionResult GoToChangePasswordPage()
+        {
+            string? id = HttpContext.Session.GetString("id");
+            TempData["id"] = id;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequestModel requestModel)
+        {
+            try
+            {
+                if (requestModel.NewPassword != requestModel.ConfirmPassword)
+                {
+                    TempData["error"] = "Passwords must be the same!";
+                    return RedirectToAction("ChangePasswordPage");
+                }
+
+                UserDataModel? user = await _appDbContext.Users
+                    .FirstOrDefaultAsync(x => x.UserId == requestModel.UserId && x.Password == requestModel.OldPassword);
+                if (user is null)
+                {
+                    TempData["error"] = "Old password incorrect!";
+                    return RedirectToAction("ChangePasswordPage");
+                }
+
+                user.Password = requestModel.ConfirmPassword;
+                _appDbContext.Entry(user).State = EntityState.Modified;
+                int result = await _appDbContext.SaveChangesAsync();
+
+                if (result > 0)
+                {
+                    TempData["successMsg"] = "Updating Successful!";
+                }
+                else
+                {
+                    TempData["error"] = "Updating Fail!";
+                    return RedirectToAction("ChangePasswordPage");
+                }
+                return RedirectToAction("LoginPage");
             }
             catch (Exception ex)
             {

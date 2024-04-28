@@ -2,6 +2,8 @@
     ViewData["Title"] = "Login Page";
     Layout = "";
     var error = TempData["error"];
+    var successMsg = TempData["successMsg"];
+    var errorMsg = TempData["errorMsg"];
 }
 
 <!DOCTYPE html>
@@ -71,3 +73,16 @@
     <script src="~/js/main.js"></script>
 </body>
 </html>
+
+<script>
+    let successMsg = '@successMsg';
+    let errorMsg = '@errorMsg';
+
+    if (successMsg !== "" && successMsg !== null) {
+        alert(successMsg);
+    }
+
+    if (errorMsg !== "" && errorMsg !== null) {
+        alert(errorMsg);
+    }
+</script>

@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Profile  Setting";
+    var name = TempData["name"];
+    var id = TempData["id"];
+}
+
+<h1>Profile Setting</h1>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card-header">
+                <h3 class="text-center">Profile Setting</h3>
+            </div>
+            <div class="card-body">
+                @if (name is not null && id is not null)
+                {
+                    <form method="post" action="/User/UpdateProfile">
+                        <input name="UserId" value="@id" type="hidden" />
+                        <label>User Name: </label>
+                        <input name="UserName" value="@name" class="form-control" required />
+                        <br />
+                        <button type="submit" class="btn btn-outline-primary mb-3">Update</button>
+                        <br />
+                        <a href="/User/ChangePasswordPage">Change Password</a>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        let name = '@name';
+        let id = '@id';
+
+        if (name === "" || name === null || id === "" || id === null) {
+            window.location.href = "/User/LoginPage";
+        }
+    </script>
+}
