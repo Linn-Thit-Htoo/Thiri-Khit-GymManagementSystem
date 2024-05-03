@@ -37,9 +37,9 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            @foreach (var item in Model)
-            {
+        @foreach (var item in Model)
+        {
+            <tr>
                 <td>@item.UserName</td>
                 <td>@item.UserRole</td>
                 <td>@item.CheckInDateTime</td>
@@ -53,8 +53,8 @@
                     <a class="btn btn-outline-success" href="/CheckInCheckOut/EditCheckInCheckOut/@item.CICOId">Edit</a>
                     <button class="btn btn-outline-danger" onclick="btnDelete('@item.CICOId')">Delete</button>
                 </td>
-            }
-        </tr>
+            </tr>
+        }
     </tbody>
 </table>
 
